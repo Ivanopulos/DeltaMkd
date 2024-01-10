@@ -30,10 +30,10 @@ df = pd.read_excel('combined_data_with_votes.xlsx')
 
 # Обработка ФИО
 dvhod['alname'] = dvhod['last_name'] + " " + dvhod['first_name'] + " " + dvhod['middle_name']
-dvhod['alname'] = dvhod['alname'].str.lower()  # Приведение к нижнему регистру
+#dvhod['alname'] = dvhod['alname'].str.lower()  # Приведение к нижнему регистру
 
 # Создание столбца для сравнения ФИО в df
-df['ФИО правообладателя'] = df['ФИО правообладателя'].str.lower()
+#df['ФИО правообладателя'] = df['ФИО правообладателя'].str.lower()
 
 matched_dvhod = pd.DataFrame()  # Для подтвержденных записей
 
