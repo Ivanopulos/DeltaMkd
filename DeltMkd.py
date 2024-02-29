@@ -36,6 +36,7 @@ dvhod['alname'] = dvhod['last_name'] + " " + dvhod['first_name'] + " " + dvhod['
 #df['ФИО правообладателя'] = df['ФИО правообладателя'].str.lower()
 
 matched_dvhod = pd.DataFrame()  # Для подтвержденных записей
+errors_df = pd.DataFrame(columns=['property_ownership', 'user_login', 'user_email', 'last_name', 'first_name', 'middle_name'])
 
 for _, row in dvhod.iterrows():
     variable = row['property_ownership']
@@ -60,10 +61,19 @@ for _, row in dvhod.iterrows():
         df.loc[matches.index, 'Login'] = row['user_login']
         matched_dvhod = pd.concat([matched_dvhod, pd.DataFrame([row.to_dict()])], ignore_index=True)
     else:
-        with open('не_найденные.txt', 'a') as file:
-            file.write(variable + '\n')
+        #with open('не_найденные.txt', 'a') as file:
+            #file.write(variable + '\n')
+        errors_df = pd.concat([errors_df, pd.DataFrame([{
+            'property_ownership': variable,
+            'user_login': row['user_login'],
+            'user_email': row['user_email'],
+            'last_name': row['last_name'],
+            'first_name': row['first_name'],
+            'middle_name': row['middle_name']
+        }])], ignore_index=True)
 
 # Сохранение результатов
+errors_df.to_excel('не_найденные.xlsx', index=False)
 df.to_excel("combined_data_with_votes.xlsx", index=False, engine="openpyxl")
 matched_dvhod.drop('alname', axis=1, inplace=True)
 matched_dvhod.to_csv('data-exit.csv', encoding='utf-8', index=False, sep=";")
